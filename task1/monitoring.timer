@@ -1,0 +1,10 @@
+[Unit]
+Description=Таймер мониторинга веб-приложения
+
+[Timer]
+Unit=monitoring.service
+OnBootSec=10
+OnUnitActiveSec=30
+
+[Install]
+WantedBy=timers.target
