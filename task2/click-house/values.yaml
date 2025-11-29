@@ -1,0 +1,21 @@
+image:
+  repository: clickhouse/clickhouse-server
+  tag: "24.1"   # версия по умолчанию
+
+replicaCount: 1 # кол-во реплик
+
+storage:        # запрашиваемая память pvc для statefulset 
+  size: 10Gi
+
+service:
+  type: NodePort
+  port: 9000
+
+  # имя пользователя: пароль
+users:
+  - name: user1
+    password: pass1
+    profile: default
+  - name: user2
+    password: pass2
+    profile: default

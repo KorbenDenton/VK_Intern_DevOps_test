@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "clickhouse.fullname" . }}
+spec:
+  serviceName: {{ include "clickhouse.fullname" . }}
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "clickhouse.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "clickhouse.name" . }}
+    spec:
+      containers:
+        - name: clickhouse
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          ports:
+            - name: tcp
+              containerPort: {{ .Values.service.port }}
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/clickhouse
+            - name: users
+              mountPath: /etc/clickhouse-server/users.d/users.xml           # монтирование users.xml из секрета
+              subPath: users.xml
+      volumes:
+        - name: users
+          secret:
+            secretName: {{ include "clickhouse.fullname" . }}-users
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: {{ .Values.storage.size }}
