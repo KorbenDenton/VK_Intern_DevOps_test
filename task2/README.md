@@ -14,8 +14,6 @@
 
 ## Компоненты
 
-Helm Chart — шаблоны для развёртывания ClickHouse
-
 **values.yaml** — конфигурация чарта (версия, пользователи, пароли, хранилище)  
 **templates/statefulset.yaml** — StatefulSet для запуска ClickHouse с постоянным PVC  
 **templates/service.yaml** — сервис для доступа к базе  
